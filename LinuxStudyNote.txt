@@ -1,0 +1,807 @@
+﻿一、基础系统操作
+1.登录系统 ---- root 为最高权限管理员,可先用普通用户登录,再通过su - 切换到管理员
+
+2.注销 ---- logout
+
+3.关机 ---- shutdown -h now       /    poweroff
+
+4.重启 ---- shutdown -r now       /    reboot
+
+5.进入图形界面 ---- startx
+
+6.列出目录
+
+<1>列出文件和目录 ---- ls   /   dir
+
+<2>显示隐藏文件 ---- ls -a
+
+<3>显示长列表格式 ---- ls -l
+
+7.建立/删除目录
+
+<1>建立目录 ---- mkdir
+
+<2>删除目录 ---- rmdir(空文件夹)
+
+二、vi基础操作
+
+1.创建文件 ---- vi 文件名
+
+2.输入i进入insert模式
+
+3.按esc后输入:进入命令模式
+
+4.输入wq 保存并退出 输入q! 不保存退出
+
+补充:编译及运行java文件 ---- 编译 -- javac hello.java  运行 java hello
+	 编译及运行C文件 ---- 编译 gcc hello.c(产生a.out文件)  运行 ./a.out
+	 自定义编译后的C文件名 ---- gcc -o 自定义名 C文件(运行 ./自定义名)
+
+5.显示行号 set nu  取消行号 set nonu
+
+6.跳转到特定行 ---- 输入行号按esc
+
+7.查找 (/字符串) ---- 查找特定内容 按n向下查找     (?字符串) ---- 查找特定内容 ---- 按n向上查找    
+
+三、文件目录
+
+基本命令:
+
+<1>切换目录 ---- cd 目录名
+
+<2>显示当前所在目录 ---- pwd
+
+<3>显示树状目录结构 ---- tree
+
+1.根目录/
+
+2.root ---- 存放root用户相关文件
+
+3.home ---- 存放普通用户的相关文件
+
+4.bin ---- 存放常用命令
+
+5.mnt ---- 默认挂载光驱和软驱的目录
+
+6.boot ---- 存放引导相关的文件
+
+7.etc ---- 配置相关的文件
+
+8.var ---- 经常变化的文件
+
+9.sbin ---- 具有一定权限才可以使用的命令
+
+10.usr ---- 安装软件的默认文件夹
+
+四、用户管理
+
+1.添加用户 ---- useradd 用户名
+
+2.设置密码 ---- passwd 用户名(注:不写用户名默认修改当前用户密码)
+
+3.删除用户 ---- 只删除用户 -- userdel 用户名     删除用户及目录 userdel -r 用户名
+
+五、Linux常用命令
+
+1.指定运行级别
+
+<1>运行级别
+
+0 -- 关机
+
+1 -- 单用户
+
+2 -- 多用户状态没有网络服务
+
+3 -- 多用户状态有网络服务
+
+4 -- 系统未使用保留给用户
+
+5 -- 图形界面
+
+6 -- 系统重启
+
+注:修改默认的运行级别:/etc/inittab的id:5:initdefault这一行中的数字
+
+补充:万一设置为6--无限重启 ---- 解决方法 : 在进入grub引导界面时,输入e,选中第二行,输入e,在最后输入 1[进入单用户模式]  修改配置(!!!还可以重新设置密码)
+
+2.常用命令
+
+touch ---- 建立空文件
+
+cp ---- 复制命令
+
+cp -r dir1 dir2 ---- 递归复制命令(复制子目录信息)
+
+mv ---- 移动文件和改文件名
+
+rm ---- 删除文件和目录
+
+rm -rf * ---- 删除所有内容(包括目录和文件 r递归 f强制)
+
+ln ---- 建立符号连接
+
+ln -s 源目标(例: ln -s /etc/inittab inittab  ---- inittab指向实际文件/etc/inittab)
+
+more ---- 显示文件内容,带分页(按空格分页 shift+PageUp(上一页) shift+PageDown)
+
+less ---- 显示文件内容,带分页
+
+grep -n ---- 在文件中查询内容且显示行数(grep -n "szh" szh.java)
+
+|(竖杠) 管道命令(把|前面一个命令的结果交给|之后的命令处理)
+
+man ---- 相当于help(man grep)
+
+find ---- 搜索文件及目录
+
+<1>在特定的目录下搜索并显示指定名称的文件和目录
+find / -name man ---- 从根目录开始搜索名称为man的文件或目录
+
+<2>搜索一定时间内被存取/变更的文件或目录
+
+find /home -amin -10 : 十分钟内存取的文件或目录
+
+find /home -atime -10 : 十小时内存取的文件或目录
+
+find /home -cmin -10 : 十分钟内更改过的文件或目录
+
+find /home -ctime +10 : 十小时前更改过的文件或目录
+
+<3>搜索指定大小的文件
+
+find /home -size +10k : 查找/home目录下大小为10k的文件
+
+重定向命令
+
+ls -l >a.txt   列表的内容写入文件a.txt中(覆盖写)
+
+ls -al >> aa.txt   列表的内容追加到文件aa.txt的末尾
+
+从文件中输入信息 database_program<database_data
+
+六、用户组/文件所在组
+
+在添加用户时,可以指定将该用户添加到哪个分组,用root权限可以改变某个用户所在组
+
+1.添加组 groupadd police
+
+2.查看所有组的信息  vi(cat 只查看不能编辑) /etc/group
+
+3.创建用户并分配到指定组 ---- useradd -g 组名 用户名
+
+4.查看所有用户信息 ---- vi(cat) /etc/passwd
+
+补充:
+--文件权限分类:
+	r  可读(可用4表示)
+
+	w  可写(可用2表示)
+
+	x  可执行(用1表示)
+
+-rw-r--r--
+
+- 文件类型
+
+rw- 文件所有者对文件的权限
+
+r-- 文件所在组对该文件的权限
+
+r-- 其他组的用户对该文件的权限
+
+5.修改文件夹/文件的访问权限
+
+chmod 777(4+2+1) ---- 修改当前文件夹对其他用户和其他组的权限(每一个7分别代表 所有者 所有组 其他组的权限)
+
+chmod 777 文件权限名  ---- 修改文件对其他组的
+
+6.修改用户所在组
+<1>usermod -g 组名 用户名
+
+<2>usermod -d 目录名 用户名   ---- 改变用户登录的初始目录
+
+7.修改文件所有者
+
+<1>ls -ahl ---- 查看文件所有者
+
+<2>chown 用户名 文件名 ---- 修改文件所有者 
+
+<3>chgrp 组名 文件名 ---- 修改文件所在组
+
+七、Linux安装软件
+
+1.安装JDK(把**.iso镜像挂载到Linux系统上)
+
+<1>在虚拟机设置里面选择CD-ROM挂载镜像为制作好的ISO文件
+
+<2>mount /mnt/cdrom/ ---- (挂载到默认的路径  可选择挂载到其他路径)
+
+<3>把安装文件拷贝到home目录  cp jdk.bin  /home
+
+<4>切换到home目录 cd /home
+
+<5>安装  ./**.bin(输入yes接受协议)
+
+<6>环境配置文件  /etc/profile  (用#注释原来的JDK配置 -- 重启生效)
+
+<7>配置JAVA_HOME、PATH、CLASSPATH目录,同时加 export JAVA_HOME PATH CLASSPATH
+
+2.安装eclipse
+
+<1>在虚拟机设置里面选择CD-ROM挂载镜像为制作好的ISO文件
+
+<2>mount /mnt/cdrom/ ---- (挂载到默认的路径  可选择挂载到其他路径)
+
+<3>把安装文件拷贝到home目录  cp eclipse.tar.gz  /home
+
+<4>安装 tar -zxvf eclipse.tar.gz
+
+<5>启动 进入图形化界面 startx  在终端命令行中启动eclipse
+
+3.安装myeclipse
+
+<1>在虚拟机设置里面选择CD-ROM挂载镜像为制作好的ISO文件
+
+<2>mount /mnt/cdrom/ ---- (挂载到默认的路径  可选择挂载到其他路径)
+
+<3>把安装文件拷贝到home目录  cp myeclipse.bin
+
+<4>安装 ./myeclipse.bin  图形化界面安装(安装到eclipse目录中)
+
+<5>启动 启动eclipse顺带会启动myeclipse
+
+4.安装tomcat
+
+<1>在虚拟机设置里面选择CD-ROM挂载镜像为制作好的ISO文件
+
+<2>mount /mnt/cdrom/ ---- (挂载到默认的路径  可选择挂载到其他路径)
+
+<3>把安装文件拷贝到home目录  cp tomcat.tar.gz
+
+<4>安装 tar -zxvf tomcat.tar.gz
+
+5.使用安装后的程序写项目
+
+<1>以后台方式启动eclipse &(不会一直占据控制台)
+
+<2>其他操作与window相同
+
+补充:利用WinISO制作ISO文件
+
+卸载挂载的光驱  umount /mnt/cdrom/
+
+八、Linux分区
+
+1.基本概念
+
+<1>硬盘分区主要分为基本分区和扩展分区,基本分区和扩展分区的总数目不能大于4
+
+<2>基本分区可以马上被使用,但不能再分区
+
+<3>扩展分区必须进行二次分区,分区后才能使用
+
+<4>扩展分区分出的是逻辑分区,且没有数量限制
+
+2.硬盘基础知识
+
+<1>IDE硬盘
+
+--驱动器标识符为hdx~   
+
+----hd 分区所在设备的类型(此处指IDE硬盘) 
+
+----x 盘号(a为基本盘, b为基本从属盘, c为辅助主盘, d为辅助从属盘)
+
+----~ 代表分区,前四个分区用1--4表示,从5开始为逻辑分区
+
+<2>SCSI硬盘
+
+--驱动器标识符为sdx~
+
+----sd表示分区所在设备的类型
+
+3.基本命令
+
+<1>查看系统分区情况  fdisk -l
+
+<2>查看该目录在哪个分区 df 目录
+
+<3>挂载一个分区到一个文件夹 mount dev/sda1 /test/
+
+九、shell基础
+
+1.shell分类
+
+shell名称      命令名称
+
+Bourne         bin/sh
+C              bin/csh
+Kom            bin/ksh
+
+2.shell有关的命令
+
+<1>查看当前操作系统环境变量 ---- env
+
+<2>修改shell ---- chsh -s /bin/csh
+
+<3>命令补全 ---- Tab按两次
+ 
+<4>查阅历史记录命令  history(后面加数字 history 5 ---- 最近使用的5个命令)
+
+<5>!5 ---- 执行历史编号为5的命令
+
+<6>!ls ---- 执行最后一次以ls开头的命令
+
+补充(windows):
+
+<1>追踪路由  ---- tracert 目标IP/域名
+<2>测试两个IP是否畅通  ping 目标IP
+<3>查看IP情况 ipconfig(windows)  ifconfig(Linux/Unix)
+
+十、Linux网络配置
+
+1.方式1:
+<1>用root身份登录,运行setup命令进入text mode' setup utiliy对网络进行配置,这里可以进行IP,子网掩码,默认网关,DNS的设置
+
+<2>这时网卡的配置没有生效,运行/etc/rc.d/init.d/network restart命令,刚才的设置才会生效
+
+2.方式2:
+<1>ifconfig eth0(第几块网卡) x.x.x.x对网卡进行设置
+
+<2>ifconfig eth0 network x.x.x.x对子网掩码设置
+
+对广播地址和dns使用默认的,这样的网络配置将会立即生效(临时生效,重启会恢复)
+
+3.方式3:
+
+<1>修改/etc/sysconfig/network-scripts/ifcfg-eth0这个文件里的各个属性可以设置,包括IP地址,子网掩码,广播的地址,默认网关
+
+<2>这是网卡的设置没有生效,裕兴/etc/rc.d/init.d.network restart才能生效
+
+十一、RPM包相关命令
+
+1.查询rpm包
+
+<1>rpm -qa ---- 查询所安装的所有rpm包软件
+
+rpm -qa | more
+rpm -qa | grep X
+
+<2>rpm -q 软件名 ---- 查询软件包是否安装
+
+<3>rpm -qi 软件包名查询软件包信息
+
+<4>rpm -ql 软件包名 ---- 查询软件包中的文件
+
+<5>rpm -qf 文件全路径名 ---- 查询文件所属的软件包
+
+<6>rpm -qp 包文件名查询包的信息对这个软件包的介绍
+
+2.安装rpm包
+
+<1>rpm -i rpm包全路径名称 ---- 安装包到当前系统
+
+<2>rpm -ivh rpm包全路径 ---- 安装包到当前系统有提示信息
+
+补充 i -- install 安装  v ---- verbose 提示  h -- hash 进度条
+
+3.删除rpm包
+
+rpm -e rpm包的名称
+
+注:如果其他软件包依赖于要卸载的包,卸载时会产生错误信息(可以使用--nodeps忽略错误继续卸载)
+
+4.升级rpm包
+
+rpm -U rpm包全路径
+
+十二、安装samba服务(实现Windows与Linux之间的共享)
+1.安装samba
+<1>检查是否安装了Samba
+
+rpm -qa | grep samba
+
+注:删除已安装的samba(rpm -e --nodeps samba ---- 忽略依赖关系强制删除)
+
+<2>挂载安装文件到Linux
+
+mount /mnt/cdrom/
+
+<3>拷贝Samba的三个文件拷贝到home目录下
+
+cp sam* /home
+
+<4>开始安装
+
+--rpm -ivh samba-common
+
+--rpm -ivh samba-client
+
+--rpm -ivh samba
+
+2.设置samba
+
+<1>创建用户
+
+--创建Linux密码
+useradd youyou
+
+passwd youyou
+
+--将Linux的用户都加到smbpasswd中
+cat /etc/passwd | mksmbpasswd.sh>/etc/samba/smbpasswd
+
+注: cat /etc/paaswd ---- 查看所有创建的用户
+
+<2>给youyou设置samba密码
+
+smbpasswd youyou
+
+<3>启动samba服务器
+
+service smb start
+
+service smb stop
+
+service smb restart
+
+<4>samba配置
+
+共享资源的基本设置 /etc/samba/smb.conf
+
+-- comment 针对共享资源所做的说明文字,默认值为空字符串
+
+comment = dir for todayhero  ---- 共享这个目录给todayhero这个用户
+
+-- path 若共享的资源是目录,指定该目录的位置
+
+path = /tmp  ---- 共享tmp这个目录
+
+-- guest ok ---- 是否允许用户不使用用户和密码访问此资源
+
+guest ok = yes  允许用户不使用用户和密码访问此资源
+
+-- hosts allow ---- 设置设置连接主机的地址
+
+hosts allow = 192.168.50.5
+
+--hosts deny ---- 设置禁止连接的主机地址
+
+--read only ---- 设置用户共享的资源是否为只读
+
+--writable ---- 是否允许写入
+
+--browseable ---- 设置用户是否可以看到此资源
+
+--available ---- 设置是否启用资源共享
+
+十三、任务调度命令
+1.设置人物调度文件/etc/crontab
+
+<1>设置个人任务调度
+
+crontab -e 接着输入任务到调度文件
+
+5 * * * * ls -l /etc/>/tmp/to.txt   ---- 每小时的第五分钟执行 ls -l /etc/>/tmp/to.txt 
+
+注:***** ---- 每个*分别代表 分钟 小时 日期 月 星期   (不用特殊指定则用*)
+
+<2>调度任务
+
+方式1:在crontab中写多个任务(多行)
+
+方式2:把所有任务写入一个可执行文件(shell编程)
+
+-- 新建shell文件 ---- vi mytask.sh
+
+-- 写入任务 ---- date >> /home/mydate
+
+-- 修改新建的mytask.sh具有可执行权限 ---- chmod 744 mytask.sh
+
+-- 定时调用脚本 ---- crontab -e 中写入 * * * * * mytask.sh的路径
+
+<3>终止任务
+
+crontab -r  终止任务调度
+
+<4>列出所有的任务调度
+
+crontab -l
+
+十四、进程和线程
+
+1.查看进程
+
+<1> ps -a ---- 显示当前终端的所有进程信息
+
+<2> ps -u ---- 以用户的格式显示进程信息
+
+<3> ps -x ---- 显示后台进程运行参数
+
+<4> ps -aux ---- 一次查看所有信息
+
+2.终止进程
+
+-- kill 进程号 ---- 终止普通进程
+
+-- kill -9 进程 ---- 强制杀死关键进程(比如bash)
+
+-- killall 进程号 ---- 终止该进程及其子进程
+
+3.动态跟新正在运行的进程的情况
+
+<1>监视特定用户
+
+top ---> 回车  ---> 输入u ---> 回车 ---> 
+
+十六、网络相关命令
+
+输入用户名
+
+<2>终止指定的进程
+
+top ---> 回车  ---> 输入k ---> 回车 ---> 输入进程的ID号
+
+<3>指定系统状态更新的时间
+
+top -d 10 ---- 指定系统更新进程的时间为10秒
+
+补充:退出进程查看界面 ---- q (Ctrl + c)
+
+十五、设置系统时间
+
+1.查看系统时间 ---- date
+
+2.更改系统时间 ---- date MMDDHHMMCCYY (月月日日时时分分年年年年.秒秒)
+
+3.查看月历 ---- cal 月 年
+
+4.查看年历 ---- cal 年
+
+十六、网络相关命令
+
+1.显示网络统计信息 netstat(用来显示整个系统目前的网络状况(目前的连接,数据包传递数据,路由表内容))
+
+netstat -anp ---- 查看连接及对应的进程号
+
+2.查看电脑连接情况 ---- ping 电脑ip
+
+3.显示数据包进过的历程 ---- traceroute 域名
+
+4.显示路由表 ---- route
+
+十七、mysql相关
+
+1.mysql安装
+
+<1>挂载 ---- mount /mnt/cdrom/
+
+<2>拷贝文件到home目录 ---- cp mysql-* /home/
+
+<3>把安装文件解压缩 ---- tar -zxvf 文件名.tar.gz
+
+<4>创建mysql管理组 ---- groupadd mysql
+
+<2>创建mysql用户并eradd放入mysql组 ---- useradd -g mysql mysql
+
+<3>初始化数据库(先切换进入mysql文件夹) ---- scripts/mysql_install_db --user=mysql
+
+<4>修改文件的所有者为root chown -R root . (.代表当前文件夹,-R表示递归到文件夹下的所有文件)
+
+<5>修改data文件夹的所有者为mysql ---- chown -R mysql data
+
+<6>改变当前文件夹的文件所在组为mysql ---- chgrp -R mysql .
+
+2.mysql启动
+
+bin/mysqld_safe --user=mysql & (& -- 以后台方式启动)
+
+3.添加环境变量
+
+<1>查看环境变量 ---- env
+
+<2>添加环境变量 ---- /root/.bash_profile 中添加路径(在etc下的该文件是系统环境变量文件)
+
+3.mysql使用
+
+<1>创建数据库 ---- create database szh
+
+<2>创建表 ---- 
+create table users(
+userId varchar(8),
+userName varchar(8)
+);
+
+<3>插入数据 ---- insert into users values("1","xiaohong");
+
+<4>编写showUser.java文件,显示数据库中的数据
+
+注:特别注意mysql的驱动存放位置为jdk的主目录/lib/ext/
+
+4.备份及恢复mysql
+
+<1>备份 ---- mysqldump -u root -p密码(密码紧挨-p) 数据库名>data.bak
+
+<2>恢复 ---- mysql -u root -p 密码 数据库名 < data.bak
+
+<3>备份表 数据库名.表名
+注:恢复时会报错,可以先创建一个空的同名数据库,然后恢复即可
+
+十八、SSH相关(在Windows安装SSH)
+
+--Linux安装时默认安装了sshd服务而且默认是启动的,监听22号端口
+
+1.配置环境
+
+<1>在Windows上安装SSH.
+
+<2>保证机器之间可以ping通(ping不通可以通过 ifconfig eth0 192.168.22.3),保证在同一网段.
+
+<3>在SSH里面点击连接输入IP,用户名,端口号22,密码连接到Linux
+
+<4>在Linux里面通过 netstat -anp 查看到连接的sshd进程以及进程号(可以通过kill 进程号将其踢下线)
+
+十九、Linux目录结构
+1.目录
+
+-- /bin ---- 普通用户的可执行命令
+
+-- /boot ---- 存放系统启动时所需要的文件
+
+-- /dev ---- 系统中的所有设备文件
+
+-- /etc ---- 系统中的配置文件
+
+-- /home ---- 普通用户的宿主目录
+
+-- /mnt ---- 其中的子目录用于系统中可移动设备的挂载点
+
+-- /root ---- 超级用户root的宿主目录
+
+-- /sbin ---- 系统的管理命令,普通用户不能执行
+
+-- /tmp ---- 系统的临时目录
+
+-- /usr ---- 系统应用程序和相关文件
+
+-- /var ---- 系统中进场变化的文件,如日志文件,用户邮件
+
+2.目录相关命令 
+
+-- cd ---- 会回到当前用户目录
+-- rmdir ---- 删除空目录
+
+-- rm -rf 文件夹名 ---- 删除非空目录 
+
+-- cp -r 文件夹名 拷贝到目的目录 ---- 拷贝文件夹(-rf ---- 不用询问,可以直接覆盖)
+
+-- ln -s 源 目标---- 建立符号连接(达到文件共享)
+
+-- grep -n 字符串 文件1 文件2 (*表示所有文件) ---- 在文件中查找指定的字符串及显示行号
+
+3.重要文件
+
+<1>用户登录后自动执行的shell脚本
+
+-- /etc/bashrc ---- 主要为基本配置数据
+
+-- /etc/profile ---- 系统环境变量
+
+注:每个用户目录下也具有 .bash_profile和 .bashrc文件,可以单独为单个用户设置
+
+<2>临时加入一个命令路径
+
+export PATH=$PATH:/root/
+
+则可以在非root目录下执行root目录下额shell脚本
+
+<3>查看定义好的环境变量
+
+-- echo $SHELL
+
+-- echo $PATH
+
+-- echo $USER
+
+二十、shell补充
+
+1.通配符
+
+-- * ---- 代表多个字母和数字
+
+-- ? ---- 代表一个字母或数字
+
+-- \ ---- 转义字符
+
+2.alias使用(给命令起别名)
+
+alias ll=‘ls -al’
+
+二十一、Linux启动相关
+
+-- runlevel ---- 查看运行级别
+
+1.启动过程
+
+<1>BIOS自检
+
+<2>启动GRUB/LIL0
+
+<3>运行Linux内核并检测硬件
+
+<4>运行系统的第一个进程init
+
+<5>init 读取系统引导配置文件/etc/inittab中的信息进行初始化
+
+<6>/etc/rc.d/rc.sysinit系统初始化脚本
+
+<7>/etc/rc.d/rcX.d/[KS]* 根据运行级别X配置服务
+
+注:终止以K开头的服务,启动以S开头的服务
+
+<8>/etc/rc.d/rc.local 执行本地特殊配置
+
+<9>其他特殊服务
+
+二十二、压缩与解压缩
+
+1.压缩
+
+<1>zip 压缩后文件名 要压缩的文件1 要压缩的文件2
+
+<2>zip -m file.zip to.txt ---- 把to.txt压缩为file.zip,同时to.txt自动删除
+
+<3>zip -r file.zip 要压缩的文件夹路径 ---- 将当前目录的子目录一起压缩
+
+<4>zip -j file.zip 要压缩的文件 ---- 忽略子目录
+
+<5>zip -n .mpg: .jpg: .gif:  ---- 将已压缩或没有必要压缩的文件去掉
+
+<6>zip -t 102002 file.zip ---- 压缩某一日之后的文件(2002年10月20日之后的文件)
+
+<7>zip -y file.zip 要压缩文件 ---- 不压缩链接文件的源文件
+
+<8>zip file.zip 要压缩的文件 -x file2.txt ---- 在压缩时将当前目录的file2.txt文件排除在外
+
+补充:压缩率 -1 - -9 (-9压缩率最高)
+
+2.解压缩
+
+<1>unzip file.zip
+
+<2>unzip file.zip -x file2 ---- 除了file2文件外其他文件都解压缩
+
+<3>unzip -Z file.zip ---- 查看压缩包的内容(也可以使用 -l 或 -v)
+
+补充: gzip 要压缩的文件    gunzip file.gz
+
+二十三、yum(Yellow dog Updater,Modified)
+
+1.rpm包的更新
+
+<1>检查可更新的RPM包 ---- yum check-update
+
+<2>更新所有的RPM包 ---- yum update
+
+<3>更新指定的RPM包 ---- yum update rpm包
+
+<4>大规模的版本升级(连旧的淘汰的包也升级) ---- yum upgrade
+
+2.rpm包的安装和删除
+
+<1>安装RPM包 ---- yum install rpm包
+
+<2>删除RPM包(包括与该包有依赖性的包) ---- yum remove rpm包
+
+3.yum暂存(/var/cache/yum/)
+
+<1>清除暂存中的RPM包文件 ---- yum clean packages
+
+<2>清除暂存中的RPM头文件 ---- yum clean headers
+
+<3>清除暂存中旧的RPM头文件 ---- yum clean oldheaders
+
+<4>清除暂存中旧的RPM头文件和包文件 ---- yum clean 或 yum clean all
+
+
